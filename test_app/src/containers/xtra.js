@@ -1,12 +1,36 @@
 import { Component } from "react";
 import AuthService from "../services/AuthService";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import CheckButton from "react-validation/build/button";
+import { isEmail } from "validator";
+
+const required = (value) => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This field is required!
+      </div>
+    );
+  }
+};
+
+const email = (value) => {
+  if (!isEmail(value)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This is not a valid email.
+      </div>
+    );
+  }
+};
 
 class Auth extends Component {
   state = {
     email: "",
     password: "",
-    // loading: false,
-    // message: "",
+    loading: false,
+    message: "",
   };
 
   cStyles = {
@@ -37,38 +61,44 @@ class Auth extends Component {
       loading: true,
     });
 
-    // this.form.validateAll();
+    this.form.validateAll();
 
-    // if (this.checkBtn.context._errors.length == 0) {
-    AuthService.login(this.state.email, this.state.password).then(
-      () => {
-        this.props.history.push("/profile");
-        window.location.reload();
-      }
-      // (error) => {
-      //   const resMessage =
-      //     (error.response &&
-      //       error.response.data &&
-      //       error.response.data.message) ||
-      //     error.message ||
-      //     error.toString();
+    if (this.checkBtn.context._errors.length == 0) {
+      AuthService.login(this.state.email, this.state.password).then(
+        () => {
+          this.props.history.push("/profile");
+          window.location.reload();
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
 
-      //   this.setState({
-      //     loading: false,
-      //     message: resMessage,
-      //   });
-      // }
-    );
-    // } else {
-    //   this.setState({ loading: false });
-    // }
+          this.setState({
+            loading: false,
+            message: resMessage,
+          });
+        }
+      );
+    } else {
+      this.setState({ loading: false });
+    }
   };
 
   render() {
     return (
       <div className={this.cStyles.container}>
         <div className={this.cStyles.cardContainer}>
-          <form className={this.cStyles.card} onSubmit={this.handleLogin}>
+          <form
+            className={this.cStyles.card}
+            onSubmit={this.handleLogin}
+            ref={(c) => {
+              this.form = c;
+            }}
+          >
             <div className="mb-4">
               <label className={this.cStyles.label} for="email">
                 Username
@@ -79,6 +109,7 @@ class Auth extends Component {
                 type="email"
                 placeholder="email"
                 onChange={this.onChangeEmail}
+                validations={[required, email]}
               />
             </div>
             <div className="mb-6">
@@ -91,6 +122,7 @@ class Auth extends Component {
                 type="password"
                 placeholder="password"
                 onChange={this.onChangePassword}
+                validations={[required]}
               />
             </div>
             <div className={this.cStyles.buttonContainer}>
@@ -98,7 +130,6 @@ class Auth extends Component {
                 className={this.cStyles.signinButton}
                 type="button"
                 disabled={this.state.loading}
-                onClick={this.handleLogin}
               >
                 Sign In
               </button>
