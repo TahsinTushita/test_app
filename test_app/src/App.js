@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
-import Home from "./components/AppMain";
+import Home from "./components/Home";
 import Auth from "./containers/Auth";
 import Signup from "./containers/Signup";
 import Profile from "./containers/Profile";
@@ -13,6 +13,12 @@ class App extends Component {
   };
 
   csStyles = {
+    nav: "flex items-center justify-between flex-wrap bg-blue-300 p-6",
+    appNameDiv: "flex items-center flex-shrink-0 text-white mr-6",
+    appNameSpan: "font-semibold text-xl tracking-tight",
+    navItemsContainerDiv1:
+      "w-full block flex-grow lg:flex lg:items-center lg:w-auto",
+    navItemsContainerDiv2: "text-sm lg:flex-grow",
     link: "block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-500 mx-1",
   };
 
@@ -35,19 +41,17 @@ class App extends Component {
 
     return (
       <div>
-        <nav className="flex items-center justify-between flex-wrap bg-blue-300 p-6">
-          <div className="flex items-center flex-shrink-0 text-white mr-6">
-            <span className="font-semibold text-xl tracking-tight">
+        <nav className={this.csStyles.nav}>
+          <div className={this.csStyles.appNameDiv}>
+            <span className={this.csStyles.appNameSpan}>
               <Link to={"/"}>Test App</Link>
             </span>
           </div>
-          <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-            <div className="text-sm lg:flex-grow">
-              <div>
-                <Link to={"/home"} className={this.csStyles.link}>
-                  Home
-                </Link>
-              </div>
+          <div className={this.csStyles.navItemsContainerDiv1}>
+            <div className={this.csStyles.navItemsContainerDiv2}>
+              <Link to={"/home"} className={this.csStyles.link}>
+                Home
+              </Link>
 
               {/* <Link
                 to={"/signin"}
@@ -70,28 +74,27 @@ class App extends Component {
               )}
 
               {currentUser ? (
-                <div>
-                  <Link to={"/profile"} className={this.csStyles.link}>
-                    {currentUser.username}
-                  </Link>
-                  <Link
-                    to={"/signin"}
-                    className={this.csStyles.link}
-                    onClick={this.logOut}
-                  >
-                    Logout
-                  </Link>
-                </div>
+                <Link to={"/profile"} className={this.csStyles.link}>
+                  {currentUser.username}
+                </Link>
               ) : (
-                <div>
-                  <Link to={"/signin"} className={this.csStyles.link}>
-                    Sign in
-                  </Link>
+                <Link to={"/signin"} className={this.csStyles.link}>
+                  Sign in
+                </Link>
+              )}
 
-                  <Link to={"/signup"} className={this.csStyles.link}>
-                    Sign Up
-                  </Link>
-                </div>
+              {currentUser ? (
+                <Link
+                  to={"/signin"}
+                  className={this.csStyles.link}
+                  onClick={this.logOut}
+                >
+                  Logout
+                </Link>
+              ) : (
+                <Link to={"/signup"} className={this.csStyles.link}>
+                  Sign Up
+                </Link>
               )}
             </div>
           </div>

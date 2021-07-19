@@ -2,16 +2,20 @@ import React, { Component } from "react";
 import AuthService from "../services/AuthService";
 
 export default class Profile extends Component {
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      currentUser: AuthService.getCurrentUser(),
-    };
-  }
+  //   this.state = {
+  //     currentUser: AuthService.getCurrentUser(),
+  //   };
+  // }
+
+  state = {
+    currentUser: AuthService.getCurrentUser(),
+  };
 
   render() {
-    const { currentUser } = this.state;
+    const currentUser = this.state.currentUser;
 
     return (
       <div className="container">

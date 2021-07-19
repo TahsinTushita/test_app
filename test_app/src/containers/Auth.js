@@ -14,6 +14,8 @@ class Auth extends Component {
     cardContainer: "w-full max-w-xs",
     card: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4",
     label: "block text-gray-700 text-sm font-bold mb-2",
+    input:
+      "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
     buttonContainer: "flex items-center justify-between",
     signinButton:
       "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
@@ -41,23 +43,25 @@ class Auth extends Component {
 
     // if (this.checkBtn.context._errors.length == 0) {
     AuthService.login(this.state.email, this.state.password).then(
-      () => {
+      (response) => {
         this.props.history.push("/profile");
         window.location.reload();
-      }
-      // (error) => {
-      //   const resMessage =
-      //     (error.response &&
-      //       error.response.data &&
-      //       error.response.data.message) ||
-      //     error.message ||
-      //     error.toString();
+        console.log(response);
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
 
-      //   this.setState({
-      //     loading: false,
-      //     message: resMessage,
-      //   });
-      // }
+        console.log(resMessage);
+        // this.setState({
+        //   loading: false,
+        //   message: resMessage,
+        // });
+      }
     );
     // } else {
     //   this.setState({ loading: false });
@@ -74,7 +78,7 @@ class Auth extends Component {
                 Username
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className={this.cStyles.input}
                 id="email"
                 type="email"
                 placeholder="email"
@@ -86,7 +90,7 @@ class Auth extends Component {
                 Password
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className={this.cStyles.input}
                 id="password"
                 type="password"
                 placeholder="password"

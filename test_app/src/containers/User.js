@@ -3,13 +3,17 @@ import React, { Component } from "react";
 import UserService from "../services/UserService";
 
 class User extends Component {
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      content: "",
-    };
-  }
+  //   this.state = {
+  //     content: "",
+  //   };
+  // }
+
+  state = {
+    content: "",
+  };
 
   componentDidMount() {
     UserService.getUserBoard().then(
